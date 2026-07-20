@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from bcc import BPF
 import ctypes
+import requests
 
 bpf_code = """
 #include <uapi/linux/ptrace.h>
@@ -27,7 +28,7 @@ class ProcData(ctypes.Structure):
     _fields_ = [("pid", ctypes.c_uint32), ("ppid", ctypes.c_uint32), ("comm", ctypes.c_char * 16)]
 
 print("=" * 50)
-print("🚀 LIVE KERNEL MONITOR RUNNING")
+print("🚀 LIVE ENTERPRISE KERNEL MONITOR RUNNING")
 print("=" * 50)
 print(f"{'PARENT PID':<12}{'CHILD PID':<12}{'COMMAND':<25}")
 print("-" * 50)
@@ -36,7 +37,16 @@ bpf = BPF(text=bpf_code)
 
 def print_event(cpu, data, size):
     event = ctypes.cast(data, ctypes.POINTER(ProcData)).contents
-    print(f"{event.ppid:<12}{event.pid:<12}{event.comm.decode('utf-8', errors='replace'):<25}")
+    process_name = event.comm.decode('utf-8', errors='replace')
+    log_message = f"⚠️ ALERT: New Process Spawned -> PID: {event.pid} | Parent: {event.ppid} | Command: {process_name}"
+    print(f"{event.ppid:<12}{event.pid:<12}{process_name:<25}")
+    
+    webhook_url = "YOUR_DISCORD_WEBHOOK_URL"
+    if "ssh" in process_name or "bash" in process_name or "sh" in process_name:
+        try:
+            requests.post(webhook_url, json={"content": log_message})
+        except:
+            pass
 
 bpf["events"].open_perf_buffer(print_event)
 while True:
@@ -45,3 +55,4 @@ while True:
     except KeyboardInterrupt:
         print("\nExiting Safely...")
         exit()
+
