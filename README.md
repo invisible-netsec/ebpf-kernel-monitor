@@ -20,3 +20,23 @@ Execute with administrative privileges to allow safe kernel instruction insertio
 sudo python3 kernel_monitor.py
 ```
 
+## 📊 Licensing & Monetization Tiers
+
+### 🟢 Free Open-Source Core
+- Real-time kernel instrumentation via terminal console output.
+- Custom local kprobes tracking system calls (`sys_clone`).
+- Licensed under copyleft AGPLv3.
+
+### 🔵 Premium Alert Engine ($29/month)
+- Asynchronous webhook deliveries to Discord, Slack, and PagerDuty alert spaces.
+- Real-time intrusion indicators targeting unauthorized shell instances (`bash`/`ssh`).
+- Access to enterprise script modules.
+
+### 🔴 Commercial Enterprise License ($499 one-time)
+- Full legal waiver bypassing copyleft AGPLv3 reporting boundaries.
+- Permission to integrate core eBPF parsing loops into closed-source corporate platforms.
+- Includes 1 year of custom low-level configuration architecture support.
+
+👉 **[Upgrade to Premium or Purchase Corporate Waiver](https://ko-fi.com)**
+
+
